@@ -26,8 +26,10 @@ DROP TABLE IF EXISTS replies;
 CREATE TABLE replies(
   id INTEGER PRIMARY KEY,
   body TEXT,
+  question_id INTEGER NOT NULL,
   parent_id INTEGER,
   user_id INTEGER NOT NULL,
+  FOREIGN KEY (question_id) REFERENCES questions(id),
   FOREIGN KEY (parent_id) REFERENCES replies(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -45,17 +47,24 @@ INSERT INTO
 VALUES
   ('John', 'Doe');
 
+  INSERT INTO
+    users(fname, lname)
+  VALUES
+    ('Jane', 'Daw');
+
 INSERT INTO
   questions(title, body, author_id)
 VALUES
   ('why?', 'hello', '1');
 
 INSERT INTO
-  replies(body, parent_id, user_id)
+  replies(body, question_id, parent_id, user_id)
 VALUES
-  ('this is a parent reply!', NULL, '1');
+  ('this is a parent reply!', '1', NULL, '1');
 
 INSERT INTO
-  replies(body, parent_id, user_id)
+  replies(body, question_id, parent_id, user_id)
 VALUES
-  ('this is a reply a reply!', '1', 1);
+  ('this is a reply a reply!', '1', '1', 1);
+
+  INSERT INTO question_follows(author_id, question_id) VALUES (1, 1);
